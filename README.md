@@ -1,9 +1,33 @@
 # WTWR (What to Wear?)
 
-## About the project
+This web applications is meant to tell the user which items they should wear based on the weather in their locations.
 
-The idea of the application is pretty simple - we make a call to an API, which then responds with the daily weather forecast. We collect the weather data, process it, and then based on the forecast, we recommend suitable clothing to the user.
+## Screenshots
 
-## Links
+![App Screenshot](./src/assets/Showing-temp.JPG)
+This shows the temp in the users area.
 
-- [Figma Design](https://www.figma.com/file/DTojSwldenF9UPKQZd6RRb/Sprint-10%3A-WTWR)
+![App Screenshot](./src/assets/Items-weather.JPG)
+This tells the user the appropriate clothes to wear for the weather events.
+
+![App Screenshot](./src/assets/preview-clothes.JPG)
+Able to expand on the picture.
+
+![App Screenshot](./src/assets/add-new.JPG)
+Also the ability to add new clothing items.
+
+## Features
+
+- Fetches weather data from OpenWeather API
+- Suggests clothing based on weather conditions
+- Uses user's location to get the weather
+- Responsive UI
+
+## Tech Used
+
+- React.js
+- Node.js
+- OpenWeather API
+- CSS Modules
+
+## Git Hub link
