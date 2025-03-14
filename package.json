@@ -1,7 +1,7 @@
 {
   "name": "se_project_react",
-  "homepage": "https://milialeana.github.io/se_project_react/",
   "private": true,
+  "homepage": "https://milialeana.github.io/se_project_react/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
