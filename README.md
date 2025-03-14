@@ -31,3 +31,5 @@ Also the ability to add new clothing items.
 - CSS Modules
 
 ## Git Hub link
+
+[Visit the GitHub link](https://milialeana.github.io/se_project_react/)
