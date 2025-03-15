@@ -9,11 +9,11 @@ function ItemCard({ item, onCardClick }) {
     <li className="card">
       <h2 className="card__name">{item.name}</h2>
       <img
-        onClick={handleCardClick}
+        onClick={() => handleCardClick(item)}
         className="card__image"
         src={item.link}
-        alt={item.name}
-      ></img>
+        alt={item.name || "Clothing item"}
+      />
     </li>
   );
 }

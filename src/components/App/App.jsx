@@ -32,6 +32,17 @@ function App() {
     setSelectedWeather(event.target.value);
   };
 
+  // Opens preview modal
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+    setActiveModal("preview");
+  };
+
+  // Open add garment modal
+  const handleAddClick = () => {
+    setActiveModal("add-garment");
+  };
+
   // Handle modal close & reset
   const closeActiveModal = () => {
     setActiveModal("");
@@ -60,101 +71,71 @@ function App() {
       </div>
 
       {/* New Garment Modal */}
-      <ModalWithForm
-        title="New garment"
-        buttonText="Add garment"
-        activeModal={activeModal}
-        onClose={closeActiveModal}
-      >
-        <label htmlFor="name" className="modal__label">
-          Name
-          <input
-            type="text"
-            className="modal__input"
-            id="name"
-            name="name"
-            placeholder="Name"
-            autoComplete="name"
-            value={formValues.name}
-            onChange={handleInputChange}
-          />
-        </label>
-
-        <label htmlFor="imageUrl" className="modal__label">
-          Image
-          <input
-            type="text"
-            className="modal__input"
-            id="imageUrl"
-            name="imageUrl"
-            placeholder="Image URL"
-            autoComplete="url"
-            value={formValues.imageUrl}
-            onChange={handleInputChange}
-          />
-        </label>
-
-        <fieldset className="modal__radio-buttons">
-          <legend className="modal__legend">Select the weather type:</legend>
-
-          <label className="modal__label modal__label_type_radio">
-            <input
-              type="radio"
-              id="hot"
-              name="weather"
-              value="hot"
-              className="modal__input_type_checkbox"
-              checked={selectedWeather === "hot"}
-              onChange={handleWeatherChange}
-            />
-            Hot
-          </label>
-
-          <label className="modal__label modal__label_type_radio">
-            <input
-              type="radio"
-              id="warm"
-              name="weather"
-              value="warm"
-              className="modal__input_type_checkbox"
-              checked={selectedWeather === "warm"}
-              onChange={handleWeatherChange}
-            />
-            Warm
-          </label>
-
-          <label className="modal__label modal__label_type_radio">
-            <input
-              type="radio"
-              id="cold"
-              name="weather"
-              value="cold"
-              className="modal__input_type_checkbox"
-              checked={selectedWeather === "cold"}
-              onChange={handleWeatherChange}
-            />
-            Cold
-          </label>
-        </fieldset>
-
-        {/* Disable submit button*/}
-        <button
-          type="submit"
-          className="modal__submit"
-          disabled={
-            !formValues.name || !formValues.imageUrl || !selectedWeather
-          }
+      {activeModal === "add-garment" && (
+        <ModalWithForm
+          title="New garment"
+          buttonText="Add garment"
+          activeModal={activeModal === "add-garment"}
+          onClose={closeActiveModal}
         >
-          Add Garment
-        </button>
-      </ModalWithForm>
+          <label htmlFor="name" className="modal__label">
+            Name
+            <input
+              type="text"
+              className="modal__input"
+              id="name"
+              name="name"
+              placeholder="Name"
+              autoComplete="name"
+              value={formValues.name}
+              onChange={handleInputChange}
+            />
+          </label>
 
-      {/* Preview Item */}
-      <ItemModal
-        activeModal={activeModal}
-        card={selectedCard}
-        onClose={closeActiveModal}
-      />
+          <label htmlFor="imageUrl" className="modal__label">
+            Image
+            <input
+              type="text"
+              className="modal__input"
+              id="imageUrl"
+              name="imageUrl"
+              placeholder="Image URL"
+              autoComplete="url"
+              value={formValues.imageUrl}
+              onChange={handleInputChange}
+            />
+          </label>
+
+          <fieldset className="modal__radio-buttons">
+            <legend className="modal__legend">Select the weather type:</legend>
+            {["hot", "warm", "cold"].map((weather) => (
+              <label
+                key={weather}
+                className="modal__label modal__label_type_radio"
+              >
+                <input
+                  type="radio"
+                  name="weather"
+                  value={weather}
+                  className="modal__input_type_checkbox"
+                  checked={selectedWeather === weather}
+                  onChange={handleWeatherChange}
+                />
+                {weather.charAt(0).toUpperCase() + weather.slice(1)}
+              </label>
+            ))}
+          </fieldset>
+        </ModalWithForm>
+      )}
+
+      {/* Preview Item Modal */}
+      {activeModal === "preview" && selectedCard && (
+        <ItemModal
+          activeModal={activeModal}
+          card={selectedCard}
+          onClose={closeActiveModal}
+        />
+      )}
     </div>
   );
 }
