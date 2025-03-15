@@ -27,7 +27,6 @@ function Header({ handleAddClick, weatherData }) {
           <img src={avatar} alt="Profile" className="header__avatar" />
         </div>
       </header>
-      <div className="header__line"></div>
     </>
   );
 }

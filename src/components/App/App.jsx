@@ -69,60 +69,62 @@ function App() {
       </div>
 
       {/* New Garment Modal */}
-      <ModalWithForm
-        title="New garment"
-        buttonText="Add garment"
-        isOpen={activeModal === "add-garment"}
-        onClose={closeActiveModal}
-      >
-        <label htmlFor="name" className="modal__label">
-          Name
-          <input
-            type="text"
-            className="modal__input"
-            id="name"
-            name="name"
-            placeholder="Name"
-            autoComplete="name"
-            value={formValues.name}
-            onChange={handleInputChange}
-          />
-        </label>
+      {activeModal === "add-garment" && (
+        <ModalWithForm
+          title="New garment"
+          buttonText="Add garment"
+          isOpen={activeModal === "add-garment"}
+          onClose={closeActiveModal}
+        >
+          <label htmlFor="name" className="modal__label">
+            Name
+            <input
+              type="text"
+              className="modal__input"
+              id="name"
+              name="name"
+              placeholder="Name"
+              autoComplete="name"
+              value={formValues.name}
+              onChange={handleInputChange}
+            />
+          </label>
 
-        <label htmlFor="imageUrl" className="modal__label">
-          Image
-          <input
-            type="text"
-            className="modal__input"
-            id="imageUrl"
-            name="imageUrl"
-            placeholder="Image URL"
-            autoComplete="url"
-            value={formValues.imageUrl}
-            onChange={handleInputChange}
-          />
-        </label>
+          <label htmlFor="imageUrl" className="modal__label">
+            Image
+            <input
+              type="text"
+              className="modal__input"
+              id="imageUrl"
+              name="imageUrl"
+              placeholder="Image URL"
+              autoComplete="url"
+              value={formValues.imageUrl}
+              onChange={handleInputChange}
+            />
+          </label>
 
-        <fieldset className="modal__radio-buttons">
-          <legend className="modal__legend">Select the weather type:</legend>
-          {["hot", "warm", "cold"].map((weather) => (
-            <label
-              key={weather}
-              className="modal__label modal__label_type_radio"
-            >
-              <input
-                type="radio"
-                name="weather"
-                value={weather}
-                className="modal__input_type_checkbox"
-                checked={selectedWeather === weather}
-                onChange={handleWeatherChange}
-              />
-              {weather.charAt(0).toUpperCase() + weather.slice(1)}
-            </label>
-          ))}
-        </fieldset>
-      </ModalWithForm>
+          <fieldset className="modal__radio-buttons">
+            <legend className="modal__legend">Select the weather type:</legend>
+            {["hot", "warm", "cold"].map((weather) => (
+              <label
+                key={weather}
+                className="modal__label modal__label_type_radio"
+              >
+                <input
+                  type="radio"
+                  name="weather"
+                  value={weather}
+                  className="modal__input_type_checkbox"
+                  checked={selectedWeather === weather}
+                  onChange={handleWeatherChange}
+                />
+                {weather.charAt(0).toUpperCase() + weather.slice(1)}
+              </label>
+            ))}
+          </fieldset>
+        </ModalWithForm>
+      )}
 
       {/* Preview Item Modal */}
       <ItemModal
