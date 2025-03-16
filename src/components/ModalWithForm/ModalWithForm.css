@@ -27,10 +27,9 @@
   right: 28px;
   width: 20px;
   height: 20px;
-  background: transparent url("../../assets/close-btn-gray.svg") center
-    no-repeat;
   border: none;
   cursor: pointer;
+  background: none;
 }
 
 .modal__content {
@@ -112,7 +111,6 @@
 
 .modal__radio-input:checked + .modal__label_type_radio {
   color: black;
-  font-weight: bold; /* Optional: Make text bold */
 }
 
 .modal__submit:hover {
