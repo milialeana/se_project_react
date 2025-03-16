@@ -106,20 +106,24 @@ function App() {
         <fieldset className="modal__radio-buttons">
           <legend className="modal__legend">Select the weather type:</legend>
           {["hot", "warm", "cold"].map((weather) => (
-            <label
-              key={weather}
-              className="modal__label modal__label_type_radio"
-            >
+            <div key={weather} className="modal__radio-option">
               <input
                 type="radio"
+                id={weather}
                 name="weather"
                 value={weather}
-                className="modal__input_type_checkbox"
+                className="modal__radio-input"
                 checked={selectedWeather === weather}
                 onChange={handleWeatherChange}
               />
-              {weather.charAt(0).toUpperCase() + weather.slice(1)}
-            </label>
+              <label
+                key={weather}
+                htmlFor={weather}
+                className="modal__label modal__label_type_radio"
+              >
+                {weather.charAt(0).toUpperCase() + weather.slice(1)}
+              </label>
+            </div>
           ))}
         </fieldset>
       </ModalWithForm>

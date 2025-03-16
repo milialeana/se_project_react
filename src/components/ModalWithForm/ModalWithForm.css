@@ -17,7 +17,7 @@
   margin: 0;
 }
 
-.modal__opened {
+.modal_opened {
   visibility: visible;
 }
 
@@ -61,6 +61,7 @@
 
 .modal__legend {
   padding-top: 24px;
+  padding-bottom: 12px;
   margin: 0;
   font-family: "Cabinet Grotesk", Arial, Helvetica;
 }
@@ -72,12 +73,17 @@
   line-height: 20px;
 }
 
-.modal__label.modal__label_type_radio {
-  padding-top: 12px;
+.modal__label_type_radio {
+  padding: 0 8px 0;
 }
 
-.modal__input_type_checkbox {
-  display: none;
+.modal__radio-option {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: normal;
+  cursor: pointer;
+  padding-bottom: 8px;
+  transition: color 0.3s ease-in-out, 0.3s ease-in-out;
 }
 
 .modal__radio-buttons {
@@ -86,51 +92,8 @@
   margin: 0;
 }
 
-.modal__radio-buttons label {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  font-weight: normal;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding-left: 30px;
-  transition: color 0.3s ease-in-out, font-weight 0.3s ease-in-out;
-}
-
-.modal__radio-buttons label::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
-  background: transparent;
-  transition: all 0.3s ease-in-out;
-}
-
-.modal__radio-buttons label::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  width: 10px;
-  height: 10px;
-  background: black;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.modal__input_type_checkbox:checked + label {
-  color: black;
-}
-.modal__input_type_checkbox:checked + label::before {
-  border-color: black;
-}
-
-.modal__input_type_checkbox:checked + label::after {
-  opacity: 1;
+.modal__radio-input {
+  accent-color: black;
 }
 
 .modal__submit {
@@ -138,13 +101,18 @@
   font-family: "Cabinet Grotesk", Arial, Helvetica;
   font-size: 16px;
   color: #ffffff;
-  margin: 32px 0 36px;
+  margin: 24px 0 36px;
   border: none;
   width: 124px;
   height: 36px;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s ease-in-out;
+}
+
+.modal__radio-input:checked + .modal__label_type_radio {
+  color: black;
+  font-weight: bold; /* Optional: Make text bold */
 }
 
 .modal__submit:hover {
