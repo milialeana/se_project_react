@@ -2,10 +2,10 @@ import "./ItemModal.css";
 import closeIconWhite from "../../assets/close-btn-gray.svg";
 
 function ItemModal({ isOpen, onClose, card }) {
-  if (!isOpen) return null;
+  if (!isOpen || !card) return null;
 
   return (
-    <div className="modal modal_opened">
+    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content modal__content_type_image">
         <button
           onClick={onClose}
@@ -13,7 +13,7 @@ function ItemModal({ isOpen, onClose, card }) {
           className="modal__close modal__close_type_icon"
           aria-label="Close preview"
         >
-          <img src={closeIconWhite} alt="close" />
+          <img src={closeIconWhite} alt="Close" />
         </button>
         <img src={card.link} alt={card.name} className="modal__image" />
         <div className="modal__footer">

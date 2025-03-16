@@ -9,6 +9,10 @@
   border-radius: 16px;
 }
 
+.modal_opened {
+  visibility: visible;
+}
+
 .modal__close_type_icon {
   position: absolute;
   top: 20px;

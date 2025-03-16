@@ -18,6 +18,7 @@
   margin: 0 20px 0 auto;
   line-height: 24px;
   border: none;
+  background: none;
 }
 
 .header__user-container {
