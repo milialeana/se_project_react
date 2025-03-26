@@ -11,25 +11,8 @@
   visibility: hidden;
 }
 
-.modal__title {
-  font-family: "Cabinet Grotesk", Arial, Helvetica;
-  font-size: 16px;
-  margin: 0;
-}
-
 .modal_opened {
   visibility: visible;
-}
-
-.modal__close {
-  position: absolute;
-  top: 20px;
-  right: 28px;
-  width: 20px;
-  height: 20px;
-  border: none;
-  cursor: pointer;
-  background: none;
 }
 
 .modal__content {
@@ -42,6 +25,23 @@
   box-sizing: border-box;
   width: 100%;
   border-radius: 20px;
+}
+
+.modal__title {
+  font-family: "Cabinet Grotesk", Arial, Helvetica;
+  font-size: 16px;
+  margin: 0;
+}
+
+.modal__close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  background: none;
 }
 
 .modal__form {
@@ -63,6 +63,7 @@
   padding-bottom: 12px;
   margin: 0;
   font-family: "Cabinet Grotesk", Arial, Helvetica;
+  font-weight: bold;
 }
 
 .modal__label {
@@ -73,44 +74,46 @@
 }
 
 .modal__label_type_radio {
-  padding: 0 8px 0;
-}
-
-.modal__radio-option {
-  color: rgba(0, 0, 0, 0.6);
+  font-family: "Cabinet Grotesk", Arial, Helvetica;
   font-size: 16px;
-  font-weight: normal;
+  color: rgba(0, 0, 0, 0.6);
+  margin-left: 8px;
   cursor: pointer;
-  padding-bottom: 8px;
-  transition: color 0.3s ease-in-out, 0.3s ease-in-out;
+  transition: color 0.3s, font-weight 0.3s;
 }
 
-.modal__radio-buttons {
+.modal__fieldset {
   border: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.modal__radio-input {
+.modal__radio-button {
   accent-color: black;
 }
 
+#choiceHot:checked + .modal__label_type_radio[for="choiceHot"],
+#choiceWarm:checked + .modal__label_type_radio[for="choiceWarm"],
+#choiceCold:checked + .modal__label_type_radio[for="choiceCold"] {
+  color: black;
+  font-weight: bold;
+}
+
 .modal__submit {
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
   font-family: "Cabinet Grotesk", Arial, Helvetica;
   font-size: 16px;
-  color: #ffffff;
-  margin: 24px 0 36px;
+  margin: 24px 0 0;
   border: none;
   width: 124px;
   height: 36px;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s ease-in-out;
-}
-
-.modal__radio-input:checked + .modal__label_type_radio {
-  color: black;
 }
 
 .modal__submit:hover {
