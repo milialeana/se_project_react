@@ -11,7 +11,7 @@ import { coordinates, APIkey } from "../../utils/constants";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import { defaultClothingItems } from "../../utils/clothingItems";
+import { getItems, addItem, deleteItem } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -23,7 +23,7 @@ function App() {
   });
 
   // Form State
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
@@ -50,22 +50,42 @@ function App() {
 
   // Add Items
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    setClothingItems([{ name, link: imageUrl, weather }, ...clothingItems]);
-    closeAllModals();
+    addItem({ name, imageUrl, weather })
+      .then((newItem) => {
+        setClothingItems([newItem, ...clothingItems]);
+        closeAllModals();
+      })
+      .catch(console.error);
   };
 
   // Delete Cards
   const handleDeleteCard = (cardToDelete) => {
-    setClothingItems((prevItems) =>
-      prevItems.filter((item) => item._id !== cardToDelete._id)
-    );
-    closeAllModals();
+    deleteItem(cardToDelete._id)
+      .then(() => {
+        setClothingItems((prevItems) =>
+          prevItems.filter((item) => item._id !== cardToDelete._id)
+        );
+        closeAllModals();
+      })
+      .catch(console.error);
   };
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
       .then((data) => {
         setWeatherData(filterWeatherData(data));
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    getItems()
+      .then((data) => {
+        const formatted = data.map((item) => ({
+          ...item,
+          link: item.imageUrl || item.link,
+        }));
+        setClothingItems(formatted);
       })
       .catch(console.error);
   }, []);
