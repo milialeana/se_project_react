@@ -21,7 +21,6 @@
   padding: 28px 28px 36px;
   margin: 0;
   max-width: 496px;
-  height: 436px;
   box-sizing: border-box;
   width: 100%;
   border-radius: 20px;
@@ -103,7 +102,7 @@
 }
 
 .modal__submit {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 1);
   color: white;
   font-family: "Cabinet Grotesk", Arial, Helvetica;
   font-size: 16px;
@@ -122,4 +121,16 @@
 
 .modal__button_disabled {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal__delete-button {
+  border: none;
+  background: none;
+  position: absolute;
+  right: 20px;
+  bottom: 70px;
+  color: rgba(255, 77, 0, 1);
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
 }

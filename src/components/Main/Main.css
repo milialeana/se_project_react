@@ -1,4 +1,4 @@
-.cards__list {
+.main__items {
   display: flex;
   flex-wrap: wrap;
   margin: 0;
@@ -7,7 +7,7 @@
   gap: 21px;
 }
 
-.cards__text {
+.main__description {
   font-family: "Cabinet Grotesk";
   font-size: 20px;
   line-height: 100%;

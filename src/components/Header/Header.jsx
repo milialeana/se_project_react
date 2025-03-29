@@ -1,5 +1,5 @@
-import { useState } from "react";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import { Link } from "react-router-dom";
 
 import "./Header.css";
 
@@ -12,10 +12,16 @@ function Header({ handleAddClick, weatherData }) {
     day: "numeric",
   });
 
+  const username = "Terrence Tegegne";
+  const avatar = "";
+
   return (
     <>
       <header className="header">
-        <img className="header__logo" src={logo} alt="Logo" />
+        <Link to="/">
+          <img className="header__logo" src={logo} alt="Logo" />
+        </Link>
+
         <p className="header__date-and-location">
           {currentDate}, {weatherData.city}
         </p>
@@ -23,14 +29,26 @@ function Header({ handleAddClick, weatherData }) {
         <button
           onClick={handleAddClick}
           type="button"
-          className="header__add-clothes-btn"
+          className="header__add-button"
         >
           + Add Clothes
         </button>
-        <div className="header__user-container">
-          <p className="header__username">Terrence Tegegne</p>
-          <img src={avatar} alt="Profile" className="header__avatar" />
-        </div>
+        <Link to="/profile" className="header__link">
+          <div className="header__profile">
+            <div className="header__user-name">{username}</div>
+            {avatar ? (
+              <img
+                src={avatar || avatarDefault}
+                alt="user avatar"
+                className="header__avatar"
+              />
+            ) : (
+              <span className="header__avatar header__avatar_none">
+                {username?.toUpperCase().charAt(0) || ""}
+              </span>
+            )}
+          </div>
+        </Link>
       </header>
     </>
   );
