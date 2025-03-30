@@ -103,14 +103,22 @@ function App() {
               element={
                 <Main
                   weatherData={weatherData}
-                  onCardClick={handleCardClick}
                   clothingItems={clothingItems}
+                  onCardClick={handleCardClick}
+                  onCardDelete={handleDeleteCard}
                 />
               }
             />
             <Route
               path="/profile"
-              element={<Profile onCardClick={handleCardClick} />}
+              element={
+                <Profile
+                  clothingItems={clothingItems}
+                  onCardClick={handleCardClick}
+                  onCardDelete={handleDeleteCard}
+                  onAddNewClick={() => setActiveModal("add-garment")}
+                />
+              }
             />
           </Routes>
 
