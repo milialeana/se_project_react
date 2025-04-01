@@ -1,7 +1,10 @@
 import "./ItemModal.css";
 import closeIconWhite from "../../assets/close-btn-gray.svg";
+import useModalClose from "../../hooks/useModalClose";
 
 function ItemModal({ isOpen, onClose, onDelete, card }) {
+  useModalClose(isOpen, onClose);
+
   if (!isOpen || !card) return null;
 
   return (

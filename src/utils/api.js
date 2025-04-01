@@ -1,29 +1,29 @@
 const baseUrl = "http://localhost:3001";
 
+const checkResponse = (res) => {
+  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+};
+
+const request = (url, options) => {
+  return fetch(url, options).then(checkResponse);
+};
+
 function getItems() {
-  return fetch(`${baseUrl}/items`).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
-  });
+  return request(`${baseUrl}/items`);
 }
 
 function addItem({ name, imageUrl, weather }) {
-  return fetch(`${baseUrl}/items`, {
+  return request(`${baseUrl}/items`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, link: imageUrl, weather }),
-  }).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   });
 }
 
 function deleteItem(itemId) {
-  return fetch(`${baseUrl}/items/${itemId}`, {
+  return request(`${baseUrl}/items/${itemId}`, {
     method: "DELETE",
-  }).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   });
 }
 
-export { getItems, addItem, deleteItem };
+export { getItems, addItem, deleteItem, checkResponse };

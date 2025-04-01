@@ -1,21 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
+import useModalClose from "../../hooks/useModalClose";
 
 export default function AddItemModal({
   onClose,
   isOpen,
   onAddItemModalSubmit,
+  isLoading,
 }) {
-  const [formValues, setFormValues] = useState({ name: "", link: "" });
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
+
   const [weatherType, setWeatherType] = useState("");
 
-  const isFormValid = formValues.name && formValues.link && weatherType;
+  useModalClose(isOpen, onClose);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
+  useEffect(() => {
+    if (isOpen) {
+      resetForm();
+      setWeatherType("");
+    }
+  }, [isOpen, resetForm]);
 
   const handleRadioChange = (e) => {
     setWeatherType(e.target.value);
@@ -25,26 +32,25 @@ export default function AddItemModal({
     e.preventDefault();
 
     onAddItemModalSubmit({
-      name: formValues.name,
-      imageUrl: formValues.link,
+      name: values.name,
+      imageUrl: values.link,
       weather: weatherType,
     });
-
-    setFormValues({ name: "", link: "" });
-    setWeatherType("");
   };
+
+  const isSubmitDisabled = !isValid || !weatherType;
 
   return (
     <ModalWithForm
       title="New garment"
       name="new-card"
-      buttonText="Add garment"
+      buttonText={isLoading ? "Saving..." : "Add garment"}
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
-      isSubmitDisabled={!isFormValid}
+      isSubmitDisabled={isSubmitDisabled}
     >
-      <label htmlFor="name" className="modal__label">
+      <label htmlFor="clothing-name" className="modal__label">
         Name
         <input
           type="text"
@@ -55,25 +61,25 @@ export default function AddItemModal({
           minLength="1"
           maxLength="30"
           required
-          value={formValues.name}
+          value={values.name || ""}
           onChange={handleChange}
         />
-        <span className="modal__error" id="place-name-error" />
+        <span className="modal__error">{errors.name}</span>
       </label>
 
-      <label htmlFor="link" className="modal__label">
+      <label htmlFor="clothing-link" className="modal__label">
         Image
         <input
-          type="text"
+          type="url"
           name="link"
           id="clothing-link"
           className="modal__input"
           placeholder="Image URL"
           required
-          value={formValues.link}
+          value={values.link || ""}
           onChange={handleChange}
         />
-        <span className="modal__error" id="place-link-error" />
+        <span className="modal__error">{errors.link}</span>
       </label>
 
       <fieldset className="modal__fieldset modal__fieldset_title">
