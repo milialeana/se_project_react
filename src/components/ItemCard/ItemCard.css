@@ -3,6 +3,23 @@
   position: relative;
   display: flex;
   justify-content: center;
+  border-radius: 19px;
+  overflow: hidden;
+}
+
+.card__image {
+  width: 100%;
+  border-radius: 19px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+}
+
+.card__caption-container {
+  position: absolute;
+  top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .card__name {
@@ -11,18 +28,23 @@
   font-size: 16px;
   line-height: 20px;
   color: rgba(0, 0, 0, 0.6);
-
   background-color: rgba(255, 255, 255, 1);
   border-radius: 4px;
-  padding: 2px 12px 2px 12px;
-
-  position: absolute;
-  top: 15px;
+  padding: 2px 12px;
   margin: 0;
+  white-space: nowrap;
 }
 
-.card__image {
-  width: 100%;
-  border-radius: 19px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+.card__like-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.card__like-icon {
+  width: 18px;
+  height: 15px;
 }

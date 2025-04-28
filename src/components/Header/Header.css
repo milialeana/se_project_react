@@ -50,3 +50,17 @@
   line-height: 20px;
   width: 40px;
 }
+
+.header__signup {
+  border: none;
+  margin: 0 20px 0 20px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.header__login {
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}

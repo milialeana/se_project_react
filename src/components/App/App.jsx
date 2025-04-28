@@ -10,7 +10,9 @@ import { coordinates, APIkey } from "../../utils/constants";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import { getItems, addItem, deleteItem } from "../../utils/api";
+import { getItems, addItem, deleteItem, getUserInfo } from "../../utils/api";
+import LoginModal from "../LoginModal/LoginModal";
+import SignupModal from "../SignupModal/SignupModal";
 import useModal from "../../hooks/useModal";
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Add Garment
   const {
@@ -40,6 +43,20 @@ function App() {
     isOpen: isPreviewModalOpen,
     openModal: openPreviewModal,
     closeModal: closePreviewModal,
+  } = useModal();
+
+  // Login Modal
+  const {
+    isOpen: isLoginOpen,
+    openModal: openLoginModal,
+    closeModal: closeLoginModal,
+  } = useModal();
+
+  // Signup Modal
+  const {
+    isOpen: isSignupOpen,
+    openModal: openSignupModal,
+    closeModal: closeSignupModal,
   } = useModal();
 
   // Toggle F & C
@@ -94,6 +111,20 @@ function App() {
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      getUserInfo(token)
+        .then((res) => {
+          setCurrentUser({ name: res.name, avatar: res.avatar });
+        })
+        .catch((err) => {
+          console.error("Token invalid or expired:", err);
+          localStorage.removeItem("jwt");
+        });
+    }
+  }, []);
+
   return (
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
@@ -103,6 +134,9 @@ function App() {
           <Header
             handleAddClick={openAddGarmentModal}
             weatherData={weatherData}
+            openLoginModal={openLoginModal}
+            openSignupModal={openSignupModal}
+            currentUser={currentUser}
           />
           <Routes>
             <Route
@@ -113,6 +147,7 @@ function App() {
                   clothingItems={clothingItems}
                   onCardClick={handleCardClick}
                   onCardDelete={handleDeleteCard}
+                  currentUser={currentUser}
                 />
               }
             />
@@ -143,6 +178,19 @@ function App() {
           onClose={closePreviewModal}
           isOpen={isPreviewModalOpen}
           onDelete={handleDeleteCard}
+        />
+
+        <LoginModal
+          isOpen={isLoginOpen}
+          onClose={closeLoginModal}
+          openSignupModal={openSignupModal}
+          setCurrentUser={setCurrentUser}
+        />
+        <SignupModal
+          isOpen={isSignupOpen}
+          onClose={closeSignupModal}
+          openLoginModal={openLoginModal}
+          setCurrentUser={setCurrentUser}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>

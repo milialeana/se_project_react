@@ -1,11 +1,14 @@
 import "./SideBar.css";
-import avatar from "../../assets/avatar.png";
+import avatarDefault from "../../assets/avatar.png";
 
-function SideBar() {
+function SideBar({ currentUser }) {
+  const username = currentUser?.name || "Guest";
+  const avatar = currentUser?.avatar || avatarDefault;
+
   return (
     <div className="sidebar">
-      <img className="sidebar__avatar" src={avatar} alt="Default avatar" />
-      <p className="sidebar__username">Terrence Tegegne</p>
+      <img className="sidebar__avatar" src={avatar} alt="User avatar" />
+      <p className="sidebar__username">{username}</p>
     </div>
   );
 }

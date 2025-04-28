@@ -1,0 +1,21 @@
+.modal__signup {
+  background-color: rgba(0, 0, 0, 1);
+  color: white;
+  font-family: "Cabinet Grotesk", Arial, Helvetica;
+  font-size: 16px;
+  margin: 32px 0 0;
+  border: none;
+  width: 73px;
+  height: 36px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.modal__signup:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal__signup:disabled {
+  background-color: rgba(0, 0, 0, 0.3);
+}

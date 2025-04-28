@@ -2,11 +2,11 @@ import SideBar from "../SideBar/SideBar";
 import ClothesSection from "../ClothesSection/ClothesSection";
 import "./Profile.css";
 
-function Profile({ onCardClick, clothingItems, onCardDelete, onAddNewClick }) {
+function Profile({ onCardClick, clothingItems, onAddNewClick, currentUser }) {
   return (
     <div className="profile">
       <section className="profile__sidebar">
-        <SideBar />
+        <SideBar currentUser={currentUser} />
       </section>
       <section className="profile__clothing-items">
         <ClothesSection

@@ -53,8 +53,14 @@
   width: 100%;
   padding: 8px 0 4px;
   margin: 0;
+  font-family: "Cabinet Grotesk", Arial, Helvetica;
+  font-size: 16px;
   border: none;
   border-bottom: 1px solid #000;
+}
+
+.modal__input:focus {
+  outline: none;
 }
 
 .modal__legend {
@@ -106,7 +112,7 @@
   color: white;
   font-family: "Cabinet Grotesk", Arial, Helvetica;
   font-size: 16px;
-  margin: 24px 0 0;
+  margin: 32px 0 0;
   border: none;
   width: 124px;
   height: 36px;
@@ -133,4 +139,5 @@
   font-size: 20px;
   font-weight: 700;
   font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
+  cursor: pointer;
 }
