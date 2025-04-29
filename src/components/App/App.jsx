@@ -13,6 +13,7 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import { getItems, addItem, deleteItem, getUserInfo } from "../../utils/api";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import useModal from "../../hooks/useModal";
 
 function App() {
@@ -58,6 +59,28 @@ function App() {
     openModal: openSignupModal,
     closeModal: closeSignupModal,
   } = useModal();
+
+  // Edit Profile Modal
+  const {
+    isOpen: isEditProfileOpen,
+    openModal: openEditProfileModal,
+    closeModal: closeEditProfileModal,
+  } = useModal();
+
+  // Profile Edit Modal
+  const handleEditProfile = () => {
+    openEditProfileModal();
+  };
+
+  const handleUpdateUser = ({ name, avatar }) => {
+    setCurrentUser({ name, avatar });
+  };
+
+  // Logout
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setCurrentUser(null);
+  };
 
   // Toggle F & C
   const handleToggleSwitchChange = () => {
@@ -147,7 +170,6 @@ function App() {
                   clothingItems={clothingItems}
                   onCardClick={handleCardClick}
                   onCardDelete={handleDeleteCard}
-                  currentUser={currentUser}
                 />
               }
             />
@@ -159,6 +181,9 @@ function App() {
                   onCardClick={handleCardClick}
                   onCardDelete={handleDeleteCard}
                   onAddNewClick={openAddGarmentModal}
+                  currentUser={currentUser}
+                  handleLogout={handleLogout}
+                  handleEditProfile={handleEditProfile}
                 />
               }
             />
@@ -172,14 +197,12 @@ function App() {
           onAddItemModalSubmit={handleAddItemModalSubmit}
           isLoading={isLoading}
         />
-
         <ItemModal
           card={selectedCard}
           onClose={closePreviewModal}
           isOpen={isPreviewModalOpen}
           onDelete={handleDeleteCard}
         />
-
         <LoginModal
           isOpen={isLoginOpen}
           onClose={closeLoginModal}
@@ -191,6 +214,12 @@ function App() {
           onClose={closeSignupModal}
           openLoginModal={openLoginModal}
           setCurrentUser={setCurrentUser}
+        />
+        <EditProfileModal
+          isOpen={isEditProfileOpen}
+          onClose={closeEditProfileModal}
+          currentUser={currentUser}
+          onUpdateUser={handleUpdateUser}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>
