@@ -1,36 +1,54 @@
 import React, { useState } from "react";
-import "./SignupModal.css";
-import { signup } from "../../utils/api";
+import "./RegisterModal.css";
+import { authorize, register, checkToken } from "../../utils/auth";
 import closeIconGray from "../../assets/close-btn-gray.svg";
 
-function SignupModal({ isOpen, onClose, openLoginModal, setCurrentUser }) {
+function RegisterModal({
+  isOpen,
+  onClose,
+  openLoginModal,
+  setCurrentUser,
+  setIsLoggedIn,
+}) {
   const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
 
-  const isSubmitDisabled = !email || !password || !name || !avatar;
+  const isSubmitDisabled = !email || !password || !name;
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setIsEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+  };
+
+  const clearForm = () => {
+    setEmail("");
+    setPassword("");
+    setName("");
+    setAvatar("");
+  };
 
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    signup({ email, password, name, avatar })
+    register({ name, avatar, email, password })
+      .then(() => authorize({ email, password }))
       .then((res) => {
-        console.log("Signed up!", res);
         localStorage.setItem("jwt", res.token);
-        setCurrentUser({ name: res.name, avatar: res.avatar });
+        setIsLoggedIn(true);
+        return checkToken(res.token);
+      })
+      .then((user) => {
+        setCurrentUser(user);
+        clearForm();
         onClose();
-        openLoginModal();
-
-        setEmail("");
-        setPassword("");
-        setName("");
-        setAvatar("");
       })
       .catch((err) => {
-        console.error("Signup failed:", err);
+        console.error("register failed:", err);
       });
   };
 
@@ -42,14 +60,19 @@ function SignupModal({ isOpen, onClose, openLoginModal, setCurrentUser }) {
         </button>
         <h2 className="modal__title">Sign Up</h2>
         <form className="modal__form" onSubmit={handleSubmit}>
-          <label className="modal__label">
-            Email *
+          <label
+            className={`modal__label ${
+              !isEmailValid ? "modal__label_error" : ""
+            }`}
+          >
+            Email* {!isEmailValid && "(this is not an email address)"}
             <input
               type="email"
-              className="modal__input"
-              placeholder="Email"
+              className={`modal__input ${
+                !isEmailValid ? "modal__input_error" : ""
+              }`}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               required
             />
           </label>
@@ -76,20 +99,19 @@ function SignupModal({ isOpen, onClose, openLoginModal, setCurrentUser }) {
             />
           </label>
           <label className="modal__label">
-            Avatar URL *
+            Avatar URL (optional)
             <input
               type="url"
               className="modal__input"
               placeholder="Avatar URL"
               value={avatar}
               onChange={(e) => setAvatar(e.target.value)}
-              required
             />
           </label>
           <div className="modal__actions">
             <button
               type="submit"
-              className="modal__signup"
+              className="modal__register"
               disabled={isSubmitDisabled}
             >
               Sign Up
@@ -100,6 +122,7 @@ function SignupModal({ isOpen, onClose, openLoginModal, setCurrentUser }) {
                 type="button"
                 className="modal__switch-button"
                 onClick={() => {
+                  clearForm();
                   onClose();
                   openLoginModal();
                 }}
@@ -114,4 +137,4 @@ function SignupModal({ isOpen, onClose, openLoginModal, setCurrentUser }) {
   );
 }
 
-export default SignupModal;
+export default RegisterModal;

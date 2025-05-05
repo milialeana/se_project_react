@@ -1,14 +1,23 @@
 import "./SideBar.css";
-import avatarDefault from "../../assets/avatar.png";
 
 function SideBar({ currentUser, onEditProfile, onLogout }) {
-  const username = currentUser ? currentUser.name : null;
-  const avatar = currentUser ? currentUser.avatar : "";
+  const username = currentUser?.name || "Guest";
+  const hasAvatar = currentUser?.avatar && currentUser.avatar.trim() !== "";
 
   return (
     <div className="sidebar">
       <div className="sidebar__user-info">
-        <img className="sidebar__avatar" src={avatar} alt="User avatar" />
+        {hasAvatar ? (
+          <img
+            className="sidebar__avatar"
+            src={currentUser.avatar}
+            alt="User avatar"
+          />
+        ) : (
+          <div className="sidebar__avatar-placeholder">
+            {username ? username.charAt(0).toUpperCase() : "?"}
+          </div>
+        )}
         <p className="sidebar__username">{username}</p>
       </div>
       <button className="sidebar__button" onClick={onEditProfile}>

@@ -12,6 +12,7 @@ export default function ToggleSwitch() {
         onChange={handleToggleSwitchChange}
         type="checkbox"
         className="toggle-switch__checkbox"
+        name="temperature-unit"
       />
       <span className="toggle-switch__circle"></span>
       <span

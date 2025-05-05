@@ -1,4 +1,4 @@
-.modal__signup {
+.modal__register {
   background-color: rgba(0, 0, 0, 1);
   color: white;
   font-family: "Cabinet Grotesk", Arial, Helvetica;
@@ -12,10 +12,10 @@
   transition: background 0.3s ease-in-out;
 }
 
-.modal__signup:hover {
+.modal__register:hover {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-.modal__signup:disabled {
+.modal__register:disabled {
   background-color: rgba(0, 0, 0, 0.3);
 }

@@ -1,4 +1,6 @@
-import { checkResponse } from "./api";
+const checkResponse = (res) => {
+  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+};
 
 export const getWeather = ({ latitude, longitude }, APIkey) => {
   return fetch(

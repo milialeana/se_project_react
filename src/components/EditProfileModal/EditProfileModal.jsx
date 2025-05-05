@@ -5,6 +5,8 @@ import closeIconGray from "../../assets/close-btn-gray.svg";
 function EditProfileModal({ isOpen, onClose, currentUser, onUpdateUser }) {
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (currentUser) {
@@ -13,10 +15,26 @@ function EditProfileModal({ isOpen, onClose, currentUser, onUpdateUser }) {
     }
   }, [currentUser, isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      setErrorMessage("");
+    }
+  }, [isOpen]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onUpdateUser({ name, avatar });
-    onClose();
+    setIsLoading(true);
+    onUpdateUser({ name, avatar: avatar.trim() })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error("Update failed:", err);
+        setErrorMessage("Failed to update profile. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   if (!isOpen) return null;
@@ -40,17 +58,21 @@ function EditProfileModal({ isOpen, onClose, currentUser, onUpdateUser }) {
             />
           </label>
           <label className="modal__label">
-            Avatar *
+            Avatar (optional)
             <input
               type="url"
               className="modal__input"
               value={avatar}
               onChange={(e) => setAvatar(e.target.value)}
-              required
             />
           </label>
-          <button type="submit" className="modal__submit">
-            Save changes
+
+          {errorMessage && (
+            <p className="modal__error-message">{errorMessage}</p>
+          )}
+
+          <button type="submit" className="modal__submit" disabled={isLoading}>
+            {isLoading ? "Saving..." : "Save changes"}
           </button>
         </form>
       </div>

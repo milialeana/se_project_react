@@ -1,12 +1,12 @@
 import "./ItemCard.css";
-import { useState } from "react";
-import { likeItem } from "../../utils/api";
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 import likeIcon from "../../assets/like-button.svg";
 import likedIcon from "../../assets/liked-button.svg";
 
-function ItemCard({ card, onCardClick }) {
-  const [liked, setLiked] = useState(card.liked);
-  const [isLoading, setIsLoading] = useState(false);
+function ItemCard({ card, onCardClick, onCardLike }) {
+  const currentUser = useContext(CurrentUserContext);
+  const isLiked = card.likes.includes(currentUser?._id);
 
   const handleCardClick = () => {
     onCardClick(card);
@@ -14,40 +14,32 @@ function ItemCard({ card, onCardClick }) {
 
   const handleLikeClick = (e) => {
     e.stopPropagation();
-    const newLikedState = !liked;
-
-    setIsLoading(true);
-    likeItem(card._id, newLikedState)
-      .then(() => {
-        setLiked(newLikedState);
-      })
-      .catch((err) => {
-        console.error("Failed to update like status:", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    onCardLike(card);
   };
 
   return (
     <li className="card">
       <div className="card__caption-container">
         <h2 className="card__name">{card.name}</h2>
-        <button
-          className={`card__like-button ${
-            liked ? "card__like-button_liked" : ""
-          }`}
-          onClick={handleLikeClick}
-          aria-label="Like button"
-          disabled={isLoading}
-        >
-          <img
-            src={liked ? likedIcon : likeIcon}
-            alt="Like button"
-            className="card__like-icon"
-          />
-        </button>
+
+        {currentUser && (
+          <button
+            className={`card__like-button ${
+              isLiked ? "card__like-button_liked" : ""
+            }`}
+            onClick={handleLikeClick}
+            aria-label={isLiked ? "Unlike item" : "Like item"}
+            aria-pressed={isLiked}
+          >
+            <img
+              src={isLiked ? likedIcon : likeIcon}
+              alt="Like button"
+              className="card__like-icon"
+            />
+          </button>
+        )}
       </div>
+
       <img
         onClick={handleCardClick}
         className="card__image"

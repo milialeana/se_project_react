@@ -1,11 +1,10 @@
 const baseUrl = "http://localhost:3001";
 
-// Check response
-const checkResponse = (res) => {
-  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
-};
+// Check response helper
+const checkResponse = (res) =>
+  res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 
-// Fetch wrapper
+// Wrapper for fetch with token
 const request = (url, options = {}) => {
   const token = localStorage.getItem("jwt");
 
@@ -19,42 +18,48 @@ const request = (url, options = {}) => {
 };
 
 // Get all items
-function getItems() {
+export function getItems() {
   return request(`${baseUrl}/items`);
 }
 
-// Add a new item
-function addItem({ name, imageUrl, weather }) {
+// Add new item
+export function addItem({ name, imageUrl, weather }) {
   return request(`${baseUrl}/items`, {
     method: "POST",
-    body: JSON.stringify({ name, link: imageUrl, weather }),
+    body: JSON.stringify({ name, imageUrl, weather }),
   });
 }
 
 // Delete an item
-function deleteItem(itemId) {
+export function deleteItem(itemId) {
   return request(`${baseUrl}/items/${itemId}`, {
     method: "DELETE",
   });
 }
 
-// Like an item
-function likeItem(itemId, liked) {
-  return request(`${baseUrl}/items/${itemId}`, {
-    method: "PATCH",
-    body: JSON.stringify({ liked }),
+// Add like
+export function addCardLike(cardId) {
+  return request(`${baseUrl}/items/${cardId}/likes`, {
+    method: "PUT",
   });
 }
 
-// Handle Signup
-export function signup({ email, password, name, avatar }) {
-  return request(`${baseUrl}/signup`, {
+// Remove like
+export function removeCardLike(cardId) {
+  return request(`${baseUrl}/items/${cardId}/likes`, {
+    method: "DELETE",
+  });
+}
+
+// Sign up new user
+export function register({ email, password, name, avatar }) {
+  return request(`${baseUrl}/register`, {
     method: "POST",
     body: JSON.stringify({ email, password, name, avatar }),
   });
 }
 
-// Handle Login
+// Log in existing user
 export function login({ email, password }) {
   return request(`${baseUrl}/signin`, {
     method: "POST",
@@ -62,9 +67,15 @@ export function login({ email, password }) {
   });
 }
 
-// Get user info
+// Get current user info
 export function getUserInfo() {
   return request(`${baseUrl}/users/me`);
 }
 
-export { getItems, addItem, deleteItem, likeItem, checkResponse };
+// Update user info
+export function updateUserInfo({ name, avatar }) {
+  return request(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    body: JSON.stringify({ name, avatar }),
+  });
+}

@@ -1,24 +1,29 @@
+import { useContext } from "react";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { Link } from "react-router-dom";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 import "./Header.css";
 
 import logo from "../../assets/logo.svg";
+import avatarDefault from "../../assets/base-avatar.png";
 
 function Header({
   handleAddClick,
   weatherData,
   openLoginModal,
-  openSignupModal,
-  currentUser,
+  openRegisterModal,
 }) {
+  const currentUser = useContext(CurrentUserContext);
+  const username = currentUser ? currentUser.name : null;
+  const avatarToShow = currentUser?.avatar?.trim()
+    ? currentUser.avatar
+    : avatarDefault;
+
   const currentDate = new Date().toLocaleDateString("default", {
     month: "long",
     day: "numeric",
   });
-
-  const username = currentUser ? currentUser.name : null;
-  const avatar = currentUser ? currentUser.avatar : "";
 
   return (
     <>
@@ -44,16 +49,16 @@ function Header({
           <Link to="/profile" className="header__link">
             <div className="header__profile">
               <div className="header__user-name">{username}</div>
-              {avatar ? (
+              {currentUser?.avatar?.trim?.() ? (
                 <img
-                  src={avatar}
+                  src={avatarToShow}
                   alt="user avatar"
                   className="header__avatar"
                 />
               ) : (
-                <span className="header__avatar header__avatar_none">
-                  {username?.toUpperCase().charAt(0) || ""}
-                </span>
+                <div className="header__avatar-placeholder">
+                  {username ? username.charAt(0).toUpperCase() : "?"}
+                </div>
               )}
             </div>
           </Link>
@@ -62,9 +67,9 @@ function Header({
         {!currentUser && (
           <>
             <button
-              onClick={openSignupModal}
+              onClick={openRegisterModal}
               type="button"
-              className="header__signup"
+              className="header__register"
             >
               Sign Up
             </button>

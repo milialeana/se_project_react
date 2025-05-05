@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import "./LoginModal.css";
-import { login } from "../../utils/api";
+import { authorize, checkToken } from "../../utils/auth";
 import closeIconGray from "../../assets/close-btn-gray.svg";
 
-function LoginModal({ isOpen, onClose, openSignupModal, setCurrentUser }) {
+function LoginModal({
+  isOpen,
+  onClose,
+  openRegisterModal,
+  setCurrentUser,
+  setIsLoggedIn,
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -20,15 +26,24 @@ function LoginModal({ isOpen, onClose, openSignupModal, setCurrentUser }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    login({ email, password })
+    authorize({ email, password })
       .then((res) => {
-        setCurrentUser({ name: res.name, avatar: res.avatar });
+        localStorage.setItem("jwt", res.token);
+        setIsLoggedIn(true);
+        return checkToken(res.token);
+      })
+      .then((user) => {
+        setCurrentUser(user);
         onClose();
-        setErrorMessage("");
       })
       .catch((err) => {
-        console.error("Login failed:", err);
-        setErrorMessage("Incorrect password");
+        if (err.status === 401) {
+          setErrorMessage("Incorrect email or password");
+        } else {
+          setErrorMessage(
+            err.message || "Something went wrong. Please try again."
+          );
+        }
       });
   };
 
@@ -92,7 +107,7 @@ function LoginModal({ isOpen, onClose, openSignupModal, setCurrentUser }) {
                 onClick={() => {
                   clearForm();
                   onClose();
-                  openSignupModal();
+                  openRegisterModal();
                   setEmail("");
                   setPassword("");
                 }}
