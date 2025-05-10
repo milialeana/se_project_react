@@ -1,5 +1,5 @@
+import Modal from "../Modal/Modal.jsx";
 import "./ModalWithForm.css";
-import closeIconGray from "../../assets/close-btn-gray.svg";
 
 function ModalWithForm({
   children,
@@ -10,30 +10,30 @@ function ModalWithForm({
   onClose,
   onSubmit,
   isSubmitDisabled = false,
+  footer,
+  customButtonClassName,
 }) {
   if (!isOpen) return null;
 
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
-        <h3 className="modal__title">{title}</h3>
-        <button onClick={onClose} type="button" className="modal__close">
-          <img src={closeIconGray} alt="Close" />
-        </button>
-        <form onSubmit={onSubmit} className="modal__form" name={name}>
-          {children}
+    <Modal name={name} isOpen={isOpen} onClose={onClose}>
+      <h3 className="modal__title">{title}</h3>
+      <form onSubmit={onSubmit} className="modal__form" name={name}>
+        {children}
+        <div className="modal__actions">
           <button
             type="submit"
             className={`modal__submit ${
-              isSubmitDisabled ? "modal__button_disabled" : ""
-            }`}
+              isSubmitDisabled ? "modal__submit_disabled" : ""
+            } ${customButtonClassName || ""}`}
             disabled={isSubmitDisabled}
           >
             {buttonText}
           </button>
-        </form>
-      </div>
-    </div>
+          {footer}
+        </div>
+      </form>
+    </Modal>
   );
 }
 

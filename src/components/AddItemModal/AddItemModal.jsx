@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
-import useModalClose from "../../hooks/useModalClose";
 
 export default function AddItemModal({
   onClose,
@@ -14,8 +13,6 @@ export default function AddItemModal({
     useFormAndValidation();
 
   const [weatherType, setWeatherType] = useState("");
-
-  useModalClose(isOpen, onClose);
 
   useEffect(() => {
     if (isOpen) {
@@ -49,6 +46,7 @@ export default function AddItemModal({
       isOpen={isOpen}
       onSubmit={handleSubmit}
       isSubmitDisabled={isSubmitDisabled}
+      customButtonClassName="modal__submit_type_garment"
     >
       <label htmlFor="clothing-name" className="modal__label">
         Name
@@ -63,10 +61,10 @@ export default function AddItemModal({
           required
           value={values.name || ""}
           onChange={handleChange}
+          autoComplete="name"
         />
         <span className="modal__error">{errors.name}</span>
       </label>
-
       <label htmlFor="clothing-link" className="modal__label">
         Image
         <input
@@ -78,10 +76,10 @@ export default function AddItemModal({
           required
           value={values.link || ""}
           onChange={handleChange}
+          autoComplete="off"
         />
         <span className="modal__error">{errors.link}</span>
       </label>
-
       <fieldset className="modal__fieldset modal__fieldset_title">
         <legend className="modal__legend">Select the weather type:</legend>
         {["hot", "warm", "cold"].map((type) => (

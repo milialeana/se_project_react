@@ -65,7 +65,7 @@ function App() {
     closeModal: closeLoginModal,
   } = useModal();
 
-  // register Modal
+  // Register Modal
   const {
     isOpen: isregisterOpen,
     openModal: openRegisterModal,
@@ -81,15 +81,25 @@ function App() {
 
   const handleEditProfile = () => openEditProfileModal();
 
-  const handleUpdateUser = ({ name, avatar }) => {
-    updateUserInfo({ name, avatar })
-      .then((updatedUser) => {
-        setCurrentUser(updatedUser);
+  // Universal submit handler
+  const handleSubmit = (request, onSuccess) => {
+    setIsLoading(true);
+    request()
+      .then((result) => {
+        if (onSuccess) onSuccess(result);
       })
-      .catch((err) => {
-        console.error("Failed to update profile:", err);
-        throw err;
-      });
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  };
+
+  // Update profile
+  const handleUpdateUser = ({ name, avatar }) => {
+    const makeRequest = () => updateUserInfo({ name, avatar });
+    const onSuccess = (updatedUser) => {
+      setCurrentUser(updatedUser);
+      closeEditProfileModal();
+    };
+    handleSubmit(makeRequest, onSuccess);
   };
 
   const handleLogout = () => {
@@ -108,19 +118,17 @@ function App() {
     openPreviewModal();
   };
 
+  // Add garment
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    setIsLoading(true);
-    addItem({ name, imageUrl, weather })
-      .then((newItem) => {
+    const makeRequest = () =>
+      addItem({ name, imageUrl, weather }).then((newItem) => {
         const formattedItem = {
           ...newItem,
           link: newItem.imageUrl || newItem.link,
         };
         setClothingItems((prevItems) => [formattedItem, ...prevItems]);
-        closeAddGarmentModal();
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
+      });
+    handleSubmit(makeRequest, closeAddGarmentModal);
   };
 
   const handleCardLike = (card) => {
@@ -130,7 +138,6 @@ function App() {
     request(card._id)
       .then((updatedCard) => {
         updatedCard.link = updatedCard.imageUrl || updatedCard.link;
-
         setClothingItems((items) =>
           items.map((item) => (item._id === card._id ? updatedCard : item))
         );
@@ -213,7 +220,6 @@ function App() {
                 element={
                   <ProtectedRoute isLoggedIn={isLoggedIn}>
                     <Profile
-                      currentUser={currentUser}
                       clothingItems={clothingItems}
                       onCardClick={handleCardClick}
                       onCardDelete={handleDeleteCard}
@@ -228,7 +234,6 @@ function App() {
             </Routes>
             <Footer />
           </div>
-
           <AddItemModal
             onClose={closeAddGarmentModal}
             isOpen={isAddGarmentModalOpen}

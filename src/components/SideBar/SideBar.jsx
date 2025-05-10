@@ -1,6 +1,10 @@
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 import "./SideBar.css";
 
-function SideBar({ currentUser, onEditProfile, onLogout }) {
+function SideBar({ onEditProfile, onLogout }) {
+  const currentUser = useContext(CurrentUserContext);
+
   const username = currentUser?.name || "Guest";
   const hasAvatar = currentUser?.avatar && currentUser.avatar.trim() !== "";
 

@@ -1,31 +1,3 @@
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #0000004d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-}
-
-.modal_opened {
-  visibility: visible;
-}
-
-.modal__content {
-  position: relative;
-  background-color: #fff;
-  padding: 28px 28px 36px;
-  margin: 0;
-  max-width: 496px;
-  box-sizing: border-box;
-  width: 100%;
-  border-radius: 20px;
-}
-
 .modal__title {
   font-family: "Cabinet Grotesk", Arial, Helvetica;
   font-size: 16px;
@@ -114,7 +86,7 @@
   font-size: 16px;
   margin: 32px 0 0;
   border: none;
-  width: 124px;
+  width: 73px;
   height: 36px;
   border-radius: 4px;
   cursor: pointer;
@@ -129,6 +101,16 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+.modal__submit_type_garment {
+  width: 124px;
+  height: 36px;
+}
+
+.modal__submit_type_edit-profile {
+  width: 124px;
+  height: 36px;
+}
+
 .modal__delete-button {
   border: none;
   background: none;
@@ -140,4 +122,33 @@
   font-weight: 700;
   font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
   cursor: pointer;
+}
+
+.modal__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal__switch-button {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-family: "Cabinet Grotesk", Arial, Helvetica;
+}
+
+.modal__switch {
+  margin: 32px 0 0;
+  font-family: "Cabinet Grotesk", Arial, Helvetica;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__switch-button:hover {
+  color: rgba(0, 0, 0, 1);
+}
+
+.modal__submit_disabled {
+  background: rgba(0, 0, 0, 0.3);
 }

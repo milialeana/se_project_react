@@ -1,4 +1,5 @@
 .modal__content_type_image {
+  position: relative;
   width: 498px;
   height: 610px;
   display: flex;
@@ -50,4 +51,17 @@
 .modal__weather {
   margin: 12px 0 32px;
   height: 24px;
+}
+
+.modal__delete-button {
+  border: none;
+  background: none;
+  position: absolute;
+  right: 20px;
+  bottom: 70px;
+  color: rgba(255, 77, 0, 1);
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
+  cursor: pointer;
 }

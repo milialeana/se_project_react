@@ -1,10 +1,19 @@
 const baseUrl = "http://localhost:3001";
 
-// Check response helper
-const checkResponse = (res) =>
-  res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+// Check response
+export const checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return res.json().then((data) => {
+    return Promise.reject({
+      status: res.status,
+      message: data.message || `Error: ${res.status}`,
+    });
+  });
+};
 
-// Wrapper for fetch with token
+// Fetch with token
 const request = (url, options = {}) => {
   const token = localStorage.getItem("jwt");
 

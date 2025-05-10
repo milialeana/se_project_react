@@ -1,42 +1,35 @@
-import "./ItemModal.css";
+import Modal from "../Modal/Modal.jsx";
 import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import closeIconWhite from "../../assets/close-btn-gray.svg";
-import useModalClose from "../../hooks/useModalClose";
+import "./ItemModal.css";
+import closeIconWhite from "../../assets/close-btn-white.svg";
 
 function ItemModal({ isOpen, onClose, onDelete, card }) {
-  useModalClose(isOpen, onClose);
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner === currentUser?._id;
 
   if (!isOpen || !card) return null;
 
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content modal__content_type_image">
-        <button
-          onClick={onClose}
-          type="button"
-          className="modal__close modal__close_type_icon"
-          aria-label="Close preview"
-        >
-          <img src={closeIconWhite} alt="Close" />
+    <Modal
+      name="preview"
+      isOpen={isOpen}
+      onClose={onClose}
+      contentClassName="modal__content_type_image"
+      customCloseIcon={closeIconWhite}
+    >
+      <img src={card.link} alt={card.name} className="modal__image" />
+
+      {isOwn && (
+        <button className="modal__delete-button" onClick={() => onDelete(card)}>
+          Delete item
         </button>
-        <img src={card.link} alt={card.name} className="modal__image" />
-        <div className="modal__footer">
-          <h2 className="modal__caption">{card.name}</h2>
-          <p className="modal__weather">Weather: {card.weather}</p>
-          {isOwn && (
-            <button
-              className="modal__delete-button"
-              onClick={() => onDelete(card)}
-            >
-              Delete item
-            </button>
-          )}
-        </div>
+      )}
+      <div className="modal__footer">
+        <h2 className="modal__caption">{card.name}</h2>
+        <p className="modal__weather">Weather: {card.weather}</p>
       </div>
-    </div>
+    </Modal>
   );
 }
 

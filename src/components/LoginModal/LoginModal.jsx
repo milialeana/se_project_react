@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./LoginModal.css";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { authorize, checkToken } from "../../utils/auth";
-import closeIconGray from "../../assets/close-btn-gray.svg";
 
 function LoginModal({
   isOpen,
@@ -12,7 +12,8 @@ function LoginModal({
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const clearForm = () => {
     setEmail("");
     setPassword("");
@@ -20,8 +21,6 @@ function LoginModal({
   };
 
   const isSubmitDisabled = !email || !password;
-
-  if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,6 +33,7 @@ function LoginModal({
       })
       .then((user) => {
         setCurrentUser(user);
+        clearForm();
         onClose();
       })
       .catch((err) => {
@@ -47,78 +47,67 @@ function LoginModal({
       });
   };
 
+  const handleClose = () => {
+    clearForm();
+    onClose();
+  };
+
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
-        <button
-          className="modal__close"
-          onClick={() => {
-            clearForm();
-            onClose();
-          }}
-        >
-          <img src={closeIconGray} alt="Close" />
-        </button>
-        <h2 className="modal__title">Log In</h2>
-        <form className="modal__form" onSubmit={handleSubmit}>
-          <label className="modal__label">
-            Email
-            <input
-              type="email"
-              className="modal__input"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-            />
-          </label>
-          <label
-            className={`modal__label ${
-              errorMessage ? "modal__label_error" : ""
-            }`}
+    <ModalWithForm
+      isOpen={isOpen}
+      onClose={handleClose}
+      title="Log In"
+      onSubmit={handleSubmit}
+      buttonText="Log In"
+      isSubmitDisabled={isSubmitDisabled}
+      footer={
+        <p className="modal__switch">
+          or{" "}
+          <button
+            type="button"
+            className="modal__switch-button"
+            onClick={() => {
+              clearForm();
+              onClose();
+              openRegisterModal();
+            }}
           >
-            {errorMessage || "Password"}
-            <input
-              type="password"
-              className={`modal__input ${
-                errorMessage ? "modal__input_error" : ""
-              }`}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <div className="modal__actions">
-            <button
-              type="submit"
-              className={`modal__login ${
-                isSubmitDisabled ? "modal__login_disabled" : ""
-              }`}
-              disabled={isSubmitDisabled}
-            >
-              Log In
-            </button>
-            <p className="modal__switch">
-              or{" "}
-              <button
-                type="button"
-                className="modal__switch-button"
-                onClick={() => {
-                  clearForm();
-                  onClose();
-                  openRegisterModal();
-                  setEmail("");
-                  setPassword("");
-                }}
-              >
-                Sign Up
-              </button>
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
+            Sign Up
+          </button>
+        </p>
+      }
+    >
+      <label className="modal__label">
+        Email
+        <input
+          type="email"
+          id="login-email"
+          name="email"
+          className="modal__input"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          autoComplete="email"
+        />
+      </label>
+      <label
+        className={`modal__label ${errorMessage ? "modal__label_error" : ""}`}
+      >
+        {errorMessage || "Password"}
+        <input
+          type="password"
+          id="login-password"
+          name="password"
+          className={`modal__input ${errorMessage ? "modal__input_error" : ""}`}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+      </label>
+    </ModalWithForm>
   );
 }
 

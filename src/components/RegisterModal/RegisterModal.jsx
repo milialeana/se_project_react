@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "./RegisterModal.css";
 import { authorize, register, checkToken } from "../../utils/auth";
-import closeIconGray from "../../assets/close-btn-gray.svg";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 function RegisterModal({
   isOpen,
@@ -17,6 +16,7 @@ function RegisterModal({
   const [avatar, setAvatar] = useState("");
 
   const isSubmitDisabled = !email || !password || !name;
+
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
@@ -29,8 +29,6 @@ function RegisterModal({
     setName("");
     setAvatar("");
   };
-
-  if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,88 +50,99 @@ function RegisterModal({
       });
   };
 
+  const handleClose = () => {
+    clearForm();
+    onClose();
+  };
+
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
-        <button className="modal__close" onClick={onClose}>
-          <img src={closeIconGray} alt="Close" />
-        </button>
-        <h2 className="modal__title">Sign Up</h2>
-        <form className="modal__form" onSubmit={handleSubmit}>
-          <label
-            className={`modal__label ${
-              !isEmailValid ? "modal__label_error" : ""
-            }`}
+    <ModalWithForm
+      isOpen={isOpen}
+      onClose={handleClose}
+      title="Sign Up"
+      onSubmit={handleSubmit}
+      buttonText="Sign Up"
+      isSubmitDisabled={isSubmitDisabled}
+      footer={
+        <span className="modal__switch">
+          or{" "}
+          <button
+            type="button"
+            className="modal__switch-button"
+            onClick={() => {
+              clearForm();
+              onClose();
+              openLoginModal();
+            }}
           >
-            Email* {!isEmailValid && "(this is not an email address)"}
-            <input
-              type="email"
-              className={`modal__input ${
-                !isEmailValid ? "modal__input_error" : ""
-              }`}
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
-          </label>
-          <label className="modal__label">
-            Password *
-            <input
-              type="password"
-              className="modal__input"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <label className="modal__label">
-            Name *
-            <input
-              type="text"
-              className="modal__input"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </label>
-          <label className="modal__label">
-            Avatar URL (optional)
-            <input
-              type="url"
-              className="modal__input"
-              placeholder="Avatar URL"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
-            />
-          </label>
-          <div className="modal__actions">
-            <button
-              type="submit"
-              className="modal__register"
-              disabled={isSubmitDisabled}
-            >
-              Sign Up
-            </button>
-            <p className="modal__switch">
-              or{" "}
-              <button
-                type="button"
-                className="modal__switch-button"
-                onClick={() => {
-                  clearForm();
-                  onClose();
-                  openLoginModal();
-                }}
-              >
-                Log In
-              </button>
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
+            Log In
+          </button>
+        </span>
+      }
+    >
+      <label
+        className={`modal__label ${!isEmailValid ? "modal__label_error" : ""}`}
+      >
+        Email* {!isEmailValid && "(this is not an email address)"}
+        <input
+          type="email"
+          id="register-email"
+          name="email"
+          className={`modal__input ${
+            !isEmailValid ? "modal__input_error" : ""
+          }`}
+          value={email}
+          onChange={handleEmailChange}
+          placeholder="Email"
+          required
+          autoComplete="email"
+        />
+      </label>
+
+      <label className="modal__label">
+        Password *
+        <input
+          type="password"
+          id="register-password"
+          name="password"
+          className="modal__input"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="new-password"
+        />
+      </label>
+
+      <label className="modal__label">
+        Name *
+        <input
+          type="text"
+          id="register-name"
+          name="name"
+          className="modal__input"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          autoComplete="name"
+        />
+      </label>
+
+      <label className="modal__label">
+        Avatar URL (optional)
+        <input
+          type="url"
+          id="register-avatar"
+          name="avatar"
+          className="modal__input"
+          placeholder="Avatar URL"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
+          autoComplete="url"
+        />
+      </label>
+    </ModalWithForm>
   );
 }
 
